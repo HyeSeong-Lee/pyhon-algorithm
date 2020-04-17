@@ -1,0 +1,30 @@
+#Question:Enter a number and make the number 1. 
+#You can use only 2 or 3 when you divie the number.If you don't want to divide the number, then you can substract 1.
+#Find a minimum attempt number.
+def make(num,cache=None):
+    #I think, memoization doesn't necessary in this pratice.
+    #But, I just used memoization to prepare situation that I solve large problem.(Just pratice memoization)
+    if cache==None:
+        #memo the result when num value is 1.
+        cache={1:0}
+    if num in cache:
+        #If there is num value in dictionary, return the result.
+        return cache[num]
+    else:
+        #Code for each case.
+        if num%3==0 and num%2==0:
+            cache[num]=min(make(num/3,cache)+1,make(num/2,cache)+1,make(num-1,cache)+1)
+        else:
+            if num%3==0:
+                cache[num]=min(make(num/3,cache)+1,make(num-1,cache)+1)
+            elif num%2==0:
+                cache[num]=min(make(num/2,cache)+1,make(num-1,cache)+1)
+            else:
+                cache[num]=make(num-1,cache)+1
+        #I wrote return code here to avoid many exit.
+        return cache[num]
+def main():
+    #Decide a number and print the result.
+    n=int(input("enter your number:"))
+    print(make(n))
+main()
