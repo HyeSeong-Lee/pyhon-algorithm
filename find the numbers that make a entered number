@@ -1,0 +1,93 @@
+#get a one number(k) and get many numbers in one line(n).
+#Find pairs of two numbers that makes k when we added up the numbers.
+#You must use hash table that be operated by open adressing: liner probing.
+#The maximum of the length of table is 1.5*length of n.
+
+#hash function.
+def hash(h,k):
+    return k-h
+#hash table.
+class table:
+    def __init__(self,k,n):
+        self.t=[]
+        self.n=int(len(n)*1.5)
+        self.k=k
+        self.count=0
+    #function of liner probing
+    def liner(self,i,index):
+        while self.t[index]!=None:
+            if self.t[index]+i==self.k:
+                count+=1
+                break
+            index+=1
+        self.t[index]=i
+    #To fill None
+    def set(self):
+        for i in range(self.n):
+            self.t.append(None)
+    #To fill a number
+    #some of number of index can be exceeded of table.
+    #so i had to divide the case to several cases
+    def append(self,i):
+        index=hash(i,self.k)
+        if index>=0:
+            if index<self.n:
+                if self.t[index]==None:
+                    self.t[index]=i
+                else:
+                    self.liner(i,index)
+            else:
+                self.liner(i,0)
+        else:
+            if -index>=self.n:
+                self.liner(i,0)
+            else:
+                if self.t[index]==None:
+                    self.t[index]=i
+                else:
+                    self.liner(i,index)
+#to get number
+k=int(input())
+n=input().split()
+arr=table(k,n)
+arr.set()
+for i in range(0,len(n)):
+    n[i]=int(n[i])
+#As i already said, i had to devide the cases to several cases.
+#I had to divide the cases here as well.
+for i in n:
+    if i>=0:
+        if i<arr.n:
+            if arr.t[i]!=None:
+                if arr.t[i]+i==k:
+                    arr.count+=1
+                    continue
+                else:
+                    j=0
+                    while arr.t[i+j]!=None:
+                        if arr.t[i+j]+i==k:
+                            arr.count+=1
+                            break
+                        if i+j+1==len(arr.t):
+                            break
+                        else:
+                            j+=1
+        arr.append(i)
+    else:
+        if -i<arr.n:
+            if arr.t[i]!=None:
+                if arr.t[i]+i==k:
+                    arr.count+=1
+                    continue
+                else:
+                    j=0
+                    while arr.t[i+j]!=None:
+                        if arr.t[i+j]+i==k:
+                            arr.count+=1
+                            break
+                        if i+j+1==0:
+                            break
+                        else:
+                            j+=1
+        arr.append(i)
+print(arr.count)
