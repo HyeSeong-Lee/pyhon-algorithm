@@ -1,0 +1,15 @@
+n=int(input())
+def make(n):
+    if n==1:
+        return 0
+    elif n<=3:
+        return 1
+    else:
+        #this is very important.
+        #it can calculate minus 1 at the same time.
+        #it makes the code very simple.
+        #I could get this formula by searching internet.
+        #The reason why i upload this code is to study.
+        #By save this code, i can use this idea and similar idea in other cases.
+        return min(make(n//3)+n%3+1,make(n//2)+n%2+1)
+print(make(n))
